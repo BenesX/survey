@@ -1450,6 +1450,9 @@ export class SurveyModel extends Base
     this.locStrsChanged();
     this.currentPageChanged(newPage, oldValue);
   }
+  /**
+   * 根据传入的value 的类型获返回target page
+   */
   private getPageByObject(value: any): PageModel {
     if (!value) return null;
     if (value.getType && value.getType() == "page") return value;
@@ -1614,6 +1617,9 @@ export class SurveyModel extends Base
     if (!page) return;
     page.updateCustomWidgets();
   }
+  /**
+   * 在page更新前进行通知
+   */
   protected currentPageChanging(newValue: PageModel, oldValue: PageModel) {
     var options = {
       oldCurrentPage: oldValue,
@@ -1623,6 +1629,9 @@ export class SurveyModel extends Base
     this.onCurrentPageChanging.fire(this, options);
     return options.allowChanging;
   }
+  /**
+   * 在page更新后通知
+   */
   protected currentPageChanged(newValue: PageModel, oldValue: PageModel) {
     this.onCurrentPageChanged.fire(this, {
       oldCurrentPage: oldValue,
@@ -3322,6 +3331,10 @@ export class SurveyModel extends Base
     // 在1s后执行
     SurveyTimer.instance.start(this.timerFunc);
   }
+
+  /**
+   * 计算叠加每个page，整个survey的流程时间，根据时间判断是否进入下个page or 结束survey
+   */
   startTimerFromUI() {
     if (this.showTimerPanel != "none" && this.state === "running") {
       this.startTimer();
